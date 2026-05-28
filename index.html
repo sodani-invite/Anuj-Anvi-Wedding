@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Anvi & Anuj Wedding Invite</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    overflow-x:hidden;
+    font-family:Georgia, serif;
+    background:#f3f1e7;
+}
+
+/* =========================
+LOADER
+========================= */
+
+.loader{
+    position:fixed;
+    inset:0;
+    background:#dbe3cd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+    color:#5c7342;
+    font-size:1.2rem;
+    letter-spacing:2px;
+    transition:1s ease;
+}
+
+.loader.hide{
+    opacity:0;
+    pointer-events:none;
+}
+
+/* =========================
+OPENING SCREEN
+========================= */
+
+.opening-screen{
+    position:fixed;
+    inset:0;
+    background:#dbe3cd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    z-index:9997;
+    overflow:hidden;
+    transition:1.2s ease;
+}
+
+.opening-screen.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+/* =========================
+FLOATING ELEMENTS
+========================= */
+
+.floating-elements{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:visible;
+    pointer-events:none;
+    z-index:9998;
+}
+
+.flower,
+.butterfly{
+    position:absolute;
+    top:-100px;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    opacity:0.85;
+}
+
+.flower{
+    animation-name:fall;
+}
+
+.butterfly{
+    animation-name:butterflyFly;
+}
+
+@keyframes fall{
+
+    0%{
+        transform:translateY(-100px) rotate(0deg);
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translateY(200vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+@keyframes butterflyFly{
+
+    0%{
+        transform:translate(-10vw,-10vh) scale(0.8);
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    50%{
+        transform:translate(50vw,35vh) scale(1);
+    }
+
+    100%{
+        transform:translate(110vw,200vh) scale(0.8);
+        opacity:0;
+    }
+}
+
+/* =========================
+ENVELOPE
+========================= */
+
+.envelope-wrapper{
+    position:relative;
+    width:320px;
+    height:240px;
+    perspective:1200px;
+    z-index:10;
+}
+
+.envelope{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+.envelope-back{
+    position:absolute;
+    inset:0;
+    background:#b7c5a3;
+    border-radius:8px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+}
+
+.envelope-flap{
+    position:absolute;
+    width:100%;
+    height:120px;
+    background:#a8b896;
+    top:0;
+    left:0;
+    transform-origin:top;
+    transition:1.2s ease;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    z-index:5;
+}
+
+.floral{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2rem;
+    opacity:0.12;
+    z-index:2;
+}
+
+/* =========================
+SEAL
+========================= */
+
+.seal{
+
+    position:absolute;
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:#c69b59;
+    color:#4b2e1f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:0.24rem;
+    letter-spacing:0px;
+    font-weight:600;
+
+    font-family:
+    "Palatino Linotype",
+    serif;
+
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:10;
+    cursor:pointer;
+    transition:0.3s ease;
+    box-shadow:0 8px 25px rgba(0,0,0,0.18);
+}
+
+.seal:hover{
+    transform:translate(-50%,-50%) scale(1.05);
+}
+
+/* Open Animation */
+
+.envelope.open .envelope-flap{
+    transform:rotateX(180deg);
+}
+
+.envelope.open .seal{
+    opacity:0;
+    pointer-events:none;
+}
+
+/* Invite Text */
+
+.invite-text{
+    margin-top:70px;
+    text-align:center;
+    z-index:10;
+    position:relative;
+}
+
+.invite-text h1{
+    font-size:4rem;
+    color:#6e8a4b;
+    font-weight:400;
+    margin-bottom:10px;
+}
+
+.invite-text p{
+    color:#5d4a3d;
+    font-size:1.3rem;
+    letter-spacing:1px;
+}
+
+/* =========================
+MAIN WEBSITE
+========================= */
+
+.main-content{
+    opacity:0;
+    transition:1s ease;
+}
+
+.main-content.show{
+    opacity:1;
+}
+
+.container{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:40px;
+    padding:40px 0;
+    position:relative;
+    z-index:1;
+}
+
+/* =========================
+PAGES
+========================= */
+
+.page{
+    width:min(95vw,900px);
+    border-radius:18px;
+    overflow:hidden;
+    background:white;
+    position:relative;
+    z-index:2;
+
+    box-shadow:0 10px 35px rgba(0,0,0,0.15);
+
+    transition:
+    transform 1.2s ease,
+    opacity 1.2s ease,
+    box-shadow 0.6s ease;
+
+    transform:translateY(80px) scale(0.96);
+
+    opacity:0;
+}
+
+.page.reveal{
+    opacity:1;
+
+    transform:
+    translateY(0px)
+    scale(1);
+
+    animation:
+    gentleFloat 6s ease-in-out infinite;
+}
+
+.page:hover{
+    transform:
+    translateY(-6px)
+    scale(1.01);
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,0.22);
+}
+
+.page img{
+    width:100%;
+    display:block;
+
+    transition:
+    transform 7s ease,
+    filter 1.5s ease;
+}
+
+.page.reveal img{
+    transform:scale(1.02);
+}
+
+.page::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0)
+    );
+
+    z-index:3;
+
+    pointer-events:none;
+}
+
+/* =========================
+SAVE THE DATE
+========================= */
+
+.save-date-wrapper{
+    width:min(95vw,900px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:-10px;
+    margin-bottom:10px;
+}
+
+.scratch-card{
+
+    position:relative;
+
+    width:100%;
+    max-width:900px;
+
+    height:220px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        135deg,
+        #d8c19a,
+        #c69b59,
+        #f1e0b8
+    );
+
+    box-shadow:
+    0 12px 40px rgba(0,0,0,0.18);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.scratch-content{
+
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    z-index:1;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #f7f1e4,
+        #efe4cf
+    );
+
+    text-align:center;
+}
+
+.save-title{
+
+    font-size:2.2rem;
+
+    color:#8b6b3f;
+
+    letter-spacing:2px;
+
+    margin-bottom:10px;
+
+    font-family:
+    "Palatino Linotype",
+    serif;
+}
+
+.save-date{
+
+    font-size:3rem;
+
+    color:#4b2e1f;
+
+    font-weight:600;
+
+    margin-bottom:28px;
+}
+
+.countdown{
+
+    display:flex;
+    gap:14px;
+
+    flex-wrap:nowrap;
+
+    justify-content:center;
+    align-items:center;
+}
+
+.time-box{
+
+    min-width:95px;
+
+    background:
+    rgba(255,255,255,0.72);
+
+    backdrop-filter:blur(8px);
+
+    border-radius:16px;
+
+    padding:12px 10px;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,0.08);
+}
+
+.time-box span{
+
+    display:block;
+
+    font-size:2rem;
+
+    color:#6e5234;
+
+    font-weight:bold;
+}
+
+.time-box p{
+
+    margin-top:4px;
+
+    font-size:0.9rem;
+
+    letter-spacing:1px;
+
+    color:#8a6b45;
+}
+
+#scratchCanvas{
+
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:5;
+
+    cursor:crosshair;
+}
+
+.scratch-text{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    z-index:6;
+
+    color:white;
+
+    font-size:1.6rem;
+
+    letter-spacing:2px;
+
+    pointer-events:none;
+
+    font-weight:600;
+
+    text-shadow:
+    0 3px 10px rgba(0,0,0,0.3);
+}
+
+.party-popper{
+
+    position:absolute;
+
+    font-size:28px;
+
+    animation:popperBlast 1.4s ease forwards;
+
+    pointer-events:none;
+
+    z-index:20;
+}
+
+@keyframes popperBlast{
+
+    0%{
+        transform:translateY(0px) scale(0.5);
+        opacity:1;
+    }
+
+    100%{
+        transform:
+        translateY(-140px)
+        translateX(var(--x))
+        rotate(360deg)
+        scale(1.5);
+
+        opacity:0;
+    }
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes gentleFloat{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-6px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .envelope-wrapper{
+        width:260px;
+        height:200px;
+    }
+
+    .seal{
+        width:75px;
+        height:75px;
+        font-size:1.6rem;
+    }
+
+    .invite-text h1{
+        font-size:3rem;
+    }
+
+    .invite-text p{
+        font-size:1rem;
+    }
+
+    .container{
+        gap:24px;
+        padding:20px 0;
+    }
+
+    .page{
+        width:96vw;
+        border-radius:12px;
+    }
+
+    .scratch-card{
+        height:160px;
+    }
+
+    .save-title{
+        font-size:1.3rem;
+        margin-bottom:4px;
+    }
+
+    .save-date{
+        font-size:1.8rem;
+        margin-bottom:14px;
+    }
+
+    .countdown{
+        gap:6px;
+    }
+
+    .time-box{
+
+        min-width:62px;
+
+        padding:8px 6px;
+
+        border-radius:12px;
+    }
+
+    .time-box span{
+        font-size:1.1rem;
+    }
+
+    .time-box p{
+        font-size:0.6rem;
+    }
+
+    .scratch-text{
+        font-size:1rem;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="floating-elements"></div>
+
+<div class="loader" id="loader">
+    Loading Invitation...
+</div>
+
+<div class="opening-screen" id="openingScreen">
+
+    <div class="envelope-wrapper">
+
+        <div class="envelope" id="envelope">
+
+            <div class="envelope-back"></div>
+
+            <div class="floral">
+                ✿ ❀ ✿ ❀ ✿
+            </div>
+
+            <div class="envelope-flap"></div>
+
+            <div class="seal" id="openInvite">
+                A&A
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="invite-text">
+        <h1>You're Invited</h1>
+        <p>Tap the seal to open your invitation</p>
+    </div>
+
+</div>
+
+<audio id="bgMusic" loop playsinline>
+    <source src="assets/background-music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="main-content" id="mainContent">
+
+<div class="container">
+
+    <div class="page"><img src="assets/page_1.jpg"></div>
+
+    <!-- SAVE THE DATE -->
+
+    <div class="save-date-wrapper">
+
+        <div class="scratch-card" id="scratchCard">
+
+            <div class="scratch-content">
+
+                <div class="save-title">
+                    Save The Date
+                </div>
+
+                <div class="save-date">
+                    20 June 2026
+                </div>
+
+                <div class="countdown">
+
+                    <div class="time-box">
+                        <span id="days">00</span>
+                        <p>DAYS</p>
+                    </div>
+
+                    <div class="time-box">
+                        <span id="hours">00</span>
+                        <p>HOURS</p>
+                    </div>
+
+                    <div class="time-box">
+                        <span id="minutes">00</span>
+                        <p>MINUTES</p>
+                    </div>
+
+                    <div class="time-box">
+                        <span id="seconds">00</span>
+                        <p>SECONDS</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <canvas id="scratchCanvas"></canvas>
+
+            <div class="scratch-text">
+                Scratch to Reveal ✨
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="page"><img src="assets/page_2.jpg"></div>
+    <div class="page"><img src="assets/page_3.jpg"></div>
+    <div class="page"><img src="assets/page_4.jpg"></div>
+    <div class="page"><img src="assets/page_5.jpg"></div>
+    <div class="page"><img src="assets/page_6.jpg"></div>
+    <div class="page"><img src="assets/page_7.jpg"></div>
+    <div class="page"><img src="assets/page_8.jpg"></div>
+    <div class="page"><img src="assets/page_9.jpg"></div>
+    <div class="page"><img src="assets/page_10.jpg"></div>
+    <div class="page"><img src="assets/page_11.jpg"></div>
+    <div class="page"><img src="assets/page_12.jpg"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+LOADER
+========================= */
+
+const loader = document.getElementById('loader');
+
+window.addEventListener('load', () => {
+
+    setTimeout(() => {
+        loader.classList.add('hide');
+    }, 1200);
+
+});
+
+/* =========================
+MUSIC
+========================= */
+
+const music = document.getElementById('bgMusic');
+
+music.volume = 1;
+
+/* =========================
+OPEN INVITE
+========================= */
+
+const envelope = document.getElementById('envelope');
+const openInvite = document.getElementById('openInvite');
+const openingScreen = document.getElementById('openingScreen');
+const mainContent = document.getElementById('mainContent');
+
+openInvite.addEventListener('click', async () => {
+
+    envelope.classList.add('open');
+
+    try{
+        await music.play();
+    }catch(err){
+        console.log(err);
+    }
+
+    setTimeout(() => {
+
+        openingScreen.classList.add('hide');
+
+        mainContent.classList.add('show');
+
+    }, 1600);
+
+});
+
+/* =========================
+SCROLL REVEAL
+========================= */
+
+const pages = document.querySelectorAll('.page');
+
+const observer = new IntersectionObserver(
+
+    (entries) => {
+
+        entries.forEach((entry) => {
+
+            if(entry.isIntersecting){
+
+                entry.target.classList.add('reveal');
+
+            }
+
+        });
+
+    },
+
+    {
+        threshold:0.15
+    }
+
+);
+
+pages.forEach((page) => {
+
+    observer.observe(page);
+
+});
+
+/* =========================
+FLOWERS
+========================= */
+
+const floatingContainer =
+    document.querySelector('.floating-elements');
+
+function createFlower(){
+
+    const flower =
+        document.createElement('div');
+
+    flower.classList.add('flower');
+
+    const flowers =
+        ['🌸','🌺','🌷','💮'];
+
+    flower.innerHTML =
+        flowers[Math.floor(Math.random() * flowers.length)];
+
+    flower.style.left =
+        Math.random() * 100 + 'vw';
+
+    flower.style.fontSize =
+        (14 + Math.random() * 18) + 'px';
+
+    flower.style.animationDuration =
+        (8 + Math.random() * 8) + 's';
+
+    floatingContainer.appendChild(flower);
+
+    setTimeout(() => {
+        flower.remove();
+    }, 16000);
+}
+
+/* =========================
+BUTTERFLIES
+========================= */
+
+function createButterfly(){
+
+    const butterfly =
+        document.createElement('div');
+
+    butterfly.classList.add('butterfly');
+
+    butterfly.innerHTML = '🦋';
+
+    butterfly.style.top =
+        Math.random() * 80 + 'vh';
+
+    butterfly.style.fontSize =
+        (20 + Math.random() * 10) + 'px';
+
+    butterfly.style.animationDuration =
+        (12 + Math.random() * 10) + 's';
+
+    floatingContainer.appendChild(butterfly);
+
+    setTimeout(() => {
+        butterfly.remove();
+    }, 22000);
+}
+
+setInterval(createFlower,700);
+
+setInterval(createButterfly,5000);
+
+/* =========================
+COUNTDOWN
+========================= */
+
+const targetDate =
+new Date("June 20, 2026 00:00:00").getTime();
+
+function updateCountdown(){
+
+    const now = new Date().getTime();
+
+    const distance = targetDate - now;
+
+    const days =
+    Math.floor(distance / (1000 * 60 * 60 * 24));
+
+    const hours =
+    Math.floor(
+        (distance % (1000 * 60 * 60 * 24))
+        / (1000 * 60 * 60)
+    );
+
+    const minutes =
+    Math.floor(
+        (distance % (1000 * 60 * 60))
+        / (1000 * 60)
+    );
+
+    const seconds =
+    Math.floor(
+        (distance % (1000 * 60))
+        / 1000
+    );
+
+    document.getElementById('days').innerHTML = days;
+    document.getElementById('hours').innerHTML = hours;
+    document.getElementById('minutes').innerHTML = minutes;
+    document.getElementById('seconds').innerHTML = seconds;
+}
+
+updateCountdown();
+
+setInterval(updateCountdown,1000);
+
+/* =========================
+SCRATCH CARD
+========================= */
+
+const canvas =
+document.getElementById("scratchCanvas");
+
+const ctx =
+canvas.getContext("2d");
+
+const scratchCard =
+document.getElementById("scratchCard");
+
+let isDrawing = false;
+let revealed = false;
+
+function resizeCanvas(){
+
+    canvas.width =
+    scratchCard.offsetWidth;
+
+    canvas.height =
+    scratchCard.offsetHeight;
+
+    createScratchLayer();
+}
+
+resizeCanvas();
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+function createScratchLayer(){
+
+    const gradient =
+    ctx.createLinearGradient(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    gradient.addColorStop(0,"#c8a46a");
+    gradient.addColorStop(0.5,"#b58b4f");
+    gradient.addColorStop(1,"#e3c48f");
+
+    ctx.globalCompositeOperation =
+    "source-over";
+
+    ctx.fillStyle = gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    for(let i=0;i<180;i++){
+
+        ctx.fillStyle =
+        `rgba(255,255,255,${
+            Math.random() * 0.25
+        })`;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height,
+            Math.random() * 2,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+    }
+}
+
+function scratch(x,y){
+
+    ctx.globalCompositeOperation =
+    "destination-out";
+
+    ctx.beginPath();
+
+    ctx.arc(x,y,28,0,Math.PI*2);
+
+    ctx.fill();
+}
+
+function revealFully(){
+
+    if(revealed) return;
+
+    revealed = true;
+
+    canvas.style.transition =
+    "opacity 1s ease";
+
+    canvas.style.opacity = "0";
+
+    document.querySelector(
+        '.scratch-text'
+    ).style.display = 'none';
+
+    createPartyPopper();
+
+    setTimeout(() => {
+
+        canvas.style.display = "none";
+
+    },1000);
+}
+
+function createPartyPopper(){
+
+    const emojis =
+    ['🎉','✨','🎊','💖','🌸'];
+
+    for(let i=0;i<40;i++){
+
+        const popper =
+        document.createElement('div');
+
+        popper.classList.add(
+            'party-popper'
+        );
+
+        popper.innerHTML =
+        emojis[
+            Math.floor(
+                Math.random() *
+                emojis.length
+            )
+        ];
+
+        popper.style.left =
+        Math.random() * 100 + '%';
+
+        popper.style.top =
+        (50 + Math.random()*20) + '%';
+
+        popper.style.setProperty(
+            '--x',
+            (Math.random()*240 - 120)+'px'
+        );
+
+        scratchCard.appendChild(
+            popper
+        );
+
+        setTimeout(() => {
+            popper.remove();
+        },1500);
+    }
+}
+
+function checkReveal(){
+
+    const imageData =
+    ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    let transparent = 0;
+
+    for(let i=3;i<imageData.data.length;i+=4){
+
+        if(imageData.data[i] < 128){
+            transparent++;
+        }
+    }
+
+    const percent =
+    transparent /
+    (canvas.width * canvas.height);
+
+    if(percent > 0.10){
+
+        revealFully();
+    }
+}
+
+canvas.addEventListener(
+    "mousedown",
+    () => {
+        isDrawing = true;
+    }
+);
+
+canvas.addEventListener(
+    "mouseup",
+    () => {
+
+        isDrawing = false;
+
+        checkReveal();
+    }
+);
+
+canvas.addEventListener(
+    "mousemove",
+    (e) => {
+
+        if(!isDrawing || revealed)
+            return;
+
+        const rect =
+        canvas.getBoundingClientRect();
+
+        scratch(
+            e.clientX - rect.left,
+            e.clientY - rect.top
+        );
+    }
+);
+
+canvas.addEventListener(
+    "touchstart",
+    () => {
+        isDrawing = true;
+    }
+);
+
+canvas.addEventListener(
+    "touchend",
+    () => {
+
+        isDrawing = false;
+
+        checkReveal();
+    }
+);
+
+canvas.addEventListener(
+    "touchmove",
+    (e) => {
+
+        if(!isDrawing || revealed)
+            return;
+
+        e.preventDefault();
+
+        const rect =
+        canvas.getBoundingClientRect();
+
+        const touch =
+        e.touches[0];
+
+        scratch(
+            touch.clientX - rect.left,
+            touch.clientY - rect.top
+        );
+    }
+);
+
+</script>
+
+</body>
+</html>
